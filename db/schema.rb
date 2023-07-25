@@ -10,15 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20230724104638) do
+ActiveRecord::Schema.define(version: 20230725055416) do
 
   create_table "notes", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3" do |t|
-    t.integer "team_id"
-    t.integer "user_id"
     t.text "content"
-    t.string "access_level"
+    t.integer "access_level"
+    t.bigint "team_id"
+    t.bigint "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_notes_on_team_id"
+    t.index ["user_id"], name: "index_notes_on_user_id"
   end
 
   create_table "team_memberships", force: :cascade, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb3" do |t|
@@ -59,6 +61,8 @@ ActiveRecord::Schema.define(version: 20230724104638) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "notes", "teams"
+  add_foreign_key "notes", "users"
   add_foreign_key "team_memberships", "teams"
   add_foreign_key "team_memberships", "users"
 end
