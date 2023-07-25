@@ -8,7 +8,10 @@ class User < ApplicationRecord
   has_many :owned_teams, class_name: 'Team', foreign_key: 'manager_id'
   has_many :notes, dependent: :delete_all
   has_many :managed_teams, class_name: 'Team', foreign_key: 'manager_id'
-
+  validates :email, presence: true, uniqueness: true
+  validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
+  validates :name, presence: true
+  validates :role, inclusion: { in: %w(admin manager member), message: "%{value} is not a valid role" }
   enum role: { admin: 'admin', manager: 'manager', member: 'member' }
 
   ROLES = ['admin', 'manager', 'member'].freeze

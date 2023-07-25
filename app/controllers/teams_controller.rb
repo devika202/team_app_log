@@ -22,16 +22,18 @@ class TeamsController < ApplicationController
     def leave_team
       if @team && @team.members.include?(current_user)
         @team.members.delete(current_user)
-        redirect_to teams_path, notice: "You have left the team."
+        redirect_to dashboard_path, notice: "You have left the team."
       else
-        redirect_to teams_path, alert: "Team not found or you are not a member of this team."
+        redirect_to dashboard_path, alert: "Team not found or you are not a member of this team."
       end
     end
+
     
+   
 
     def your_teams
     @teams = current_user.owned_teams
-    redirect_to teams_path
+    redirect_to dashboard_path
     end
   
     def joined_teams
@@ -64,14 +66,21 @@ class TeamsController < ApplicationController
   
   
     def show
-      @note = @team.notes.build(user: current_user)
+      @team = Team.find(params[:id])
+      @note = @team.notes.build
     end
   
     def create_note
+      @team = Team.find(params[:id])
       @note = @team.notes.build(note_params)
       @note.user = current_user
-      @note.save
-      redirect_to @team, notice: 'Note was successfully added.'
+  
+      if @note.save
+        redirect_to @team, notice: 'Note was successfully added.'
+      else
+        # Handle validation errors
+        render 'show'
+      end
     end
   
     def join
@@ -83,12 +92,12 @@ class TeamsController < ApplicationController
       if current_user.admin?
         @team.manager = User.find(params[:manager_id])
         if @team.save
-          redirect_to teams_path, notice: 'Team manager updated successfully.'
+          redirect_to dashboard_path, notice: 'Team manager updated successfully.'
         else
-          redirect_to teams_path, alert: 'Failed to update team manager.'
+          redirect_to dashboard_path, alert: 'Failed to update team manager.'
         end
       else
-        redirect_to teams_path, alert: 'Access denied.'
+        redirect_to dashboard_path, alert: 'Access denied.'
       end
     end
 
@@ -96,9 +105,9 @@ class TeamsController < ApplicationController
       @team = Team.find(params[:id])
       if current_user.admin?
         @team.destroy
-        redirect_to teams_path, notice: "Team successfully deleted."
+        redirect_to dashboard_path, notice: "Team successfully deleted."
       else
-        redirect_to teams_path, alert: "You are not authorized to delete this team."
+        redirect_to dashboard_path, alert: "You are not authorized to delete this team."
       end
     end
 
@@ -113,11 +122,11 @@ class TeamsController < ApplicationController
     end
   
     def note_params
-      params.require(:note).permit(:content, :access_level)
+      params.require(:note).permit(:title, :content, :access_level)
     end
 
     def record_not_found
-      redirect_to teams_path, alert: "User or team not found."
+      redirect_to dashboard_path, alert: "User or team not found."
     end
   
   end

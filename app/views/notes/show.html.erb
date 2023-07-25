@@ -1,0 +1,26 @@
+<div class="container">
+  <h1 class="text-center mt-4"><%= @note.title %></h1>
+  <div class="card box-shadow mt-4" style="width: 1100px;">
+    <div class="card-body">
+      <p class="card-text"><strong>Content:</strong> <%= @note.content %></p>
+      <p class="card-text"><strong>Access Level:</strong> <%= @note.access_level_text %></p>
+    </div>
+  </div>
+<br>
+  <% if current_user.admin? || (@team.manager == current_user) %>
+    <div class="form-group row justify-content-center form-label">
+        <%= link_to 'Delete Note', delete_note_path(@note), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger', style: "width: 150px;" %>
+    </div>
+    
+    <div class="mt-4">
+        <h4>Change Access Level:</h4>
+        <%= form_with(model: @note, url: update_note_access_team_note_path(@team, @note), method: :patch, class: 'form-inline') do |form| %>
+            <%= hidden_field_tag :note_id, @note.id %>
+            <%= select_tag 'access_level', options_for_select(Note.access_levels_options, @note.access_level), class: 'form-control' %>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <%= button_tag "Update Access", type: "submit", class: "btn btn-primary", style: "width: 200px;" %>
+        <% end %>
+    </div>
+  <% end %>
+</div>
+<br><br><br><br><br>

@@ -38,9 +38,32 @@
     </tbody>
   </table>
 
-  <% if @team.manager != current_user %>
-    <% unless @team.members.include?(current_user) %>
-      <%= link_to "Join Team", join_team_path(@team), method: :post, class: "btn btn-primary" %>
+  <div class="form-group row justify-content-center form-label">
+    <% if @team.manager != current_user %>
+      <% unless @team.members.include?(current_user) %>
+        <%= link_to "Join Team", join_team_path(@team), method: :post, class: "btn btn-primary", style: "width: 100px;" %>
+      <% end %>
     <% end %>
+  </div>
+
+  <% if @team.members.include?(current_user) || @team.manager == current_user || current_user.admin? %>
+    <%= form_with(model: @note, url: create_note_team_path(@team), method: :post) do |form| %>
+      <%= form.label :title, "Title" %>
+      <%= form.text_field :title, class: "form-control", placeholder: "Enter a title for the note", required: true %>
+    
+      <%= form.label :content, "Content" %>
+      <%= form.text_area :content, class: "form-control", placeholder: "Add a note...", required: true %>
+    
+      <%= form.label :access_level, "Access Level" %>
+      <%= form.select :access_level, options_for_select(Note.access_levels_options, "access_public"), class: "form-control" %>
+    
+      <%= form.submit "Add Note", class: "btn btn-primary mt-2" %>
+    
+  
+    <div class="container" style="max-width: 1250px;">
+      <%= render 'note' %>
+    </div>
+  </div>
   <% end %>
-</div><br>
+<% end %>
+<br><br><br><br>

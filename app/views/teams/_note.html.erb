@@ -1,0 +1,35 @@
+<div class="container">
+  <% if @team.notes.any? %>
+    <h1 class="text-center mt-4">Notes</h1>
+    <% @team.notes.each_slice(3) do |notes_slice| %>
+      <div class="row new1">
+        <% notes_slice.each do |note| %>
+         
+          <% if note.access_level == Note::ACCESS_MEMBERS && user_signed_in? %>
+            <div class="col-md-4">
+              <div class="card box-shadow" style="width: 315px; height: 280px;" data-note-id="<%= note.id %>">
+                <div class="card-body">
+                  <h5 class="card-title"><%= note.title %></h5>
+                  <p class="card-text"><%= note.truncated_description %></p>
+                  <%= link_to "Read More", note_path(note), class: "btn btn-primary" %>
+                </div>
+              </div>
+            </div>
+          <% elsif note.access_level == Note::ACCESS_ADMIN_MANAGER && current_user.admin? %>
+            <div class="col-md-4">
+              <div class="card box-shadow" style="width: 315px; height: 280px;" data-note-id="<%= note.id %>">
+                <div class="card-body">
+                <h5 class="card-title"><%= note.title %></h5>
+                <p class="card-text"><%= note.truncated_description %></p>
+                <%= link_to "Read More", note_path(note), class: "btn btn-primary" %>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p>No notes available.</p>
+  <% end %>
+</div>

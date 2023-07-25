@@ -12,6 +12,7 @@ Rails.application.routes.draw do
       patch :update_manager
       delete :remove_member
       delete :destroy, action: :delete_team, as: :delete_team
+      post :create_note
     end
 
     delete :leave_team, on: :member, as: :leave_team
@@ -19,6 +20,10 @@ Rails.application.routes.draw do
   resources :users do
     get :teams, on: :member
   end
+  resources :notes
+  delete '/notes/:id', to: 'notes#destroy', as: :delete_note
+  patch '/teams/:team_id/notes/:id/update_note_access', to: 'notes#update_note_access', as: :update_note_access_team_note
+
 
   patch 'users/:id/update_role', to: 'users#update_role', as: :update_role
   get '/dashboard', to: 'dashboard#index', as: :dashboard

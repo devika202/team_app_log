@@ -8,7 +8,7 @@
 # db/seeds.rb
 
 admin_user = User.create!(
-  email: 'devikskrishnan2018@gmail.com',
+  email: 'devikaskrishnan2018@gmail.com',
   password: '123456789',
   role: 'admin',
   name: 'Devika',
