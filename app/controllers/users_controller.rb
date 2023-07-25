@@ -17,6 +17,11 @@ class UsersController < ApplicationController
       @user = User.new
     end
 
+    def teams
+      @user = User.find(params[:id])
+      @teams = @user.teams
+    end
+
     def team_assignment
       @user = User.find(params[:id])
       @teams = Team.all

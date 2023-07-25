@@ -1,20 +1,32 @@
-<h2>Create a New Team</h2>
-<%= form_for @team do |f| %>
-    <div class="form-group">
-      <%= f.label :name %>
-      <%= f.text_field :name, class: "form-control" %>
-    </div>
-  
-    <div class="form-group">
-      <%= f.label :description %>
-      <%= f.text_area :description, class: "form-control" %>
-    </div>
-  
-    <div class="form-group">
-    <%= f.label :manager_id %>
-    <%= f.collection_select :manager_id, @managers, :id, :name, { prompt: 'Select a manager' }, class: "form-control" %>
+<h2 class="text-center mt-4">Create a New Team</h2>
+<br>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-10">
+<br>
+      <%= form_for @team do |f| %>
+          <div class="form-group row form-label">
+            <%= f.label :name %>
+            <div class="col-12">
+              <%= f.text_field :name, class: "form-control" %>
+            </div>
+          </div>
+          <div class="form-group row form-label">
+            <%= f.label :description %>
+            <div class="col-12">
+              <%= f.text_area :description, class: "form-control" %>
+            </div>
+          </div>
+          <div class="form-group row form-label">
+            <%= f.label :manager_id %>
+            <div class="col-12">
+              <%= f.collection_select :manager_id, @managers, :id, :name, { prompt: 'Select a manager' }, class: "form-control" %>
+            </div>
+          </div>
+          <div class="form-group row justify-content-center form-label">
+            <%= f.submit "Create Team", class: "btn btn-primary btn-lg", style: "width: 150px;" %>
+          </div>
+        <% end %>
+      </div>
   </div>
-
-  
-    <%= f.submit "Create Team", class: "btn btn-primary" %>
-  <% end %>
+</div>

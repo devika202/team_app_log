@@ -1,12 +1,11 @@
 <div class="container">
-  <h1 class="text-center mt-4">JOINED TEAMS</h1>
-  <br>
+  <h1 class="text-center mt-4">TEAMS</h1>
   <table class="table table-striped table-bordered table-hover">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Team Name</th>
         <th scope="col">Description</th>
-        <th scope="col">Manager</th>
+        <th scope="col">Team Manager</th>
         <th scope="col">Actions</th>
       </tr>
     </thead>
@@ -17,9 +16,12 @@
           <td scope="row"><%= team.description %></td>
           <td scope="row"><%= team.manager.name %></td>
           <td scope="row">
-            <%= link_to "View More", team_path(team), class: "btn btn-primary mr-2" %>
-            <% if team.members.include?(current_user) %>
-             <%= link_to "Leave Team", leave_team_team_path(team), method: :delete, data: { confirm: "Are you sure you want to leave this team?" }, class: "btn btn-danger" %>
+            <% team.members.each do |member| %>
+              <% if current_user.manager? && team.manager == current_user || current_user.admin? %>
+                <% if team.manager != member %>
+                  <%= link_to "Remove", remove_member_team_path(team, user_id: member.id), method: :delete, data: { confirm: "Are you sure you want to remove this member from the team?" }, class: "btn btn-danger" %>
+                <% end %>          
+              <% end %>
             <% end %>
           </td>
         </tr>

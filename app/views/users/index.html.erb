@@ -1,45 +1,48 @@
-<h1>All Users</h1>
+<div class="container">
+  <h1 class="text-center mt-4">USERS LIST</h1>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Email</th>
-      <th>Role</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @users.each do |user| %>
+  <table class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark">
       <tr>
-        <td><%= user.name %></td>
-        <td><%= user.email %></td>
-        <td>
-          <% if current_user.admin? && user != current_user %>
-            <% if user.manager? && user.teams_exist? %>
-              <p><strong>User is a manager of a team. Role update is disabled.</strong></p>
+        <th scope="col">Name</th>
+        <th scope="col">Email</th>
+        <th scope="col">Role</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @users.each do |user| %>
+        <tr>
+          <td scope="row"><%= user.name %></td>
+          <td scope="row"><%= user.email %></td>
+          <td scope="row">
+            <% if current_user.admin? && user != current_user %>
+              <% if user.manager? && user.teams_exist? %>
+              <p><strong>User is a manager of <%= pluralize(user.managed_teams.count, 'team') %>. Role update is disabled.</strong></p>
+              <% else %>
+                <%= form_tag update_role_path(id: user.id), method: :patch, class: 'form-inline' do %>
+                  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+                  <%= select_tag 'user[role]', options_for_select(User.roles.keys, user.role), include_blank: 'member', class: 'form-control' %>
+                  &nbsp;&nbsp;
+                  <%= button_tag "Update", type: "submit", class: "btn btn-primary" %>
+                <% end %>
+              <% end %>
             <% else %>
-              <%= form_tag update_role_path(id: user.id), method: :patch, class: 'form-inline' do %>
-                <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
-                <%= select_tag 'user[role]', options_for_select(User.roles.keys, user.role), include_blank: 'member', class: 'form-control' %>
-                <%= button_tag "Update", type: "submit", class: "btn btn-primary" %>
+              <%= user.role.capitalize %>
+            <% end %>
+          </td>
+          <td scope="row">
+            <%= link_to 'View Teams', teams_user_path(user), class: 'btn btn-primary' %>
+            <% if current_user.admin? && user != current_user %>
+              <% if user.manager? && user.teams_exist? %>
+                <p><strong>User is a manager of a team. Delete action is disabled.</strong></p>
+              <% else %>
+                <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger' %>
               <% end %>
             <% end %>
-          <% else %>
-            <%= user.role.capitalize %>
-          <% end %>
-        </td>
-        <td>
-          <%= link_to 'View Teams', teams_user_path(user), class: 'btn btn-primary' %>
-          <% if current_user.admin? && user != current_user %>
-            <% if user.manager? && user.teams_exist? %>
-              <p><strong>User is a manager of a team. Delete action is disabled.</strong></p>
-            <% else %>
-              <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger' %>
-            <% end %>
-          <% end %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          </td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

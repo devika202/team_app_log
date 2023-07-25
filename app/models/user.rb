@@ -4,9 +4,11 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable, :confirmable
   has_many :team_memberships, dependent: :delete_all
-  has_many :teams, through: :team_memberships, dependent: :delete_all
+  has_and_belongs_to_many :teams, join_table: :team_memberships, dependent: :delete_all
   has_many :owned_teams, class_name: 'Team', foreign_key: 'manager_id'
   has_many :notes, dependent: :delete_all
+  has_many :managed_teams, class_name: 'Team', foreign_key: 'manager_id'
+
   enum role: { admin: 'admin', manager: 'manager', member: 'member' }
 
   ROLES = ['admin', 'manager', 'member'].freeze

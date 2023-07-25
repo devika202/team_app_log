@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
     before_action :authenticate_user!
-    before_action :find_team, only: [:show, :join, :update_manager, :create_note]
+    before_action :find_team, only: [:show, :join, :update_manager, :create_note, :leave_team]
     rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
 
 
@@ -18,6 +18,16 @@ class TeamsController < ApplicationController
         render :new
       end
     end
+
+    def leave_team
+      if @team && @team.members.include?(current_user)
+        @team.members.delete(current_user)
+        redirect_to teams_path, notice: "You have left the team."
+      else
+        redirect_to teams_path, alert: "Team not found or you are not a member of this team."
+      end
+    end
+    
 
     def your_teams
     @teams = current_user.owned_teams
@@ -79,6 +89,16 @@ class TeamsController < ApplicationController
         end
       else
         redirect_to teams_path, alert: 'Access denied.'
+      end
+    end
+
+    def delete_team
+      @team = Team.find(params[:id])
+      if current_user.admin?
+        @team.destroy
+        redirect_to teams_path, notice: "Team successfully deleted."
+      else
+        redirect_to teams_path, alert: "You are not authorized to delete this team."
       end
     end
 
