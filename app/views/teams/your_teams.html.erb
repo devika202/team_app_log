@@ -1,0 +1,11 @@
+<h1>Your Teams</h1>
+<ul>
+  <% @teams.each do |team| %>
+    <li><%= team.name %></li>
+  <% end %>
+</ul>
+<% if @team.manager != current_user %>
+  <% unless @team.members.include?(current_user) %>
+    <%= link_to "Join Team", join_team_path(@team), method: :post, class: "btn btn-primary" %>
+  <% end %>
+<% end %>

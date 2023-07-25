@@ -1,0 +1,38 @@
+<h1>Teams List</h1>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Team Name</th>
+      <th>Description</th>
+      <th>Team Manager</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @teams.each do |team| %>
+      <tr>
+        <td><%= team.name %></td>
+        <td><%= team.description %></td>
+        <td>
+          <% if current_user.admin? %>
+            <%= form_tag update_manager_team_path(team), method: :patch, class: 'form-inline' do %>
+              <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+              <%= select_tag 'manager_id', options_from_collection_for_select(@managers, :id, :name, team.manager_id), class: 'form-control' %>
+              <%= button_tag "Update", type: "submit", class: "btn btn-primary" %>
+            <% end %>
+          <% else %>
+            <%= team.manager.name %>
+          <% end %>
+        </td>
+        <td>
+          <%= link_to "View More", team_path(team), class: "btn btn-primary" %>
+          <% if team.manager != current_user %>
+            <% unless team.members.include?(current_user) %>
+              <%= link_to "Join Team", join_team_path(team), method: :post, class: "btn btn-primary" %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

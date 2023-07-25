@@ -1,0 +1,10 @@
+<h2>Assign <%= @user.name %> to a Team:</h2>
+<%= form_with(model: @user, url: assign_team_path(@user), method: :put) do |form| %>
+  <div class="field">
+    <%= form.label :team_id, 'Select Team' %>
+    <%= form.collection_select :team_id, @teams, :id, :name, prompt: 'Select Team' %>
+  </div>
+  <div class="actions">
+    <%= form.submit 'Assign to Team' %>
+  </div>
+<% end %>

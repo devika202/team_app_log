@@ -1,0 +1,41 @@
+<h2>Team: <%= @team.name %></h2>
+<p>Description: <%= @team.description %></p>
+<p><strong>Team Manager: <%= @team.manager.name %></strong></p>
+<h3>Members : <%= @team.members.count %></h3>
+<% unless @team.manager == current_user || current_user.admin? %>
+  <% @team.members.each do |member| %>
+    <% if @team.manager == member %>
+      <p><strong>Team Manager: <%= member.name %></strong></p>
+    <% else %>
+      <p><%= member.name %></p>
+    <% end %>
+  <% end %>
+<% end %>
+<% if @team.manager == current_user || current_user.admin? %>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @team.members.each do |member| %>
+        <tr>
+          <td><%= member.name %></td>
+          <td>
+          <% if @team.manager != member %>
+            <%= link_to "Remove", remove_member_team_path(@team, user_id: member.id), method: :delete, data: { confirm: "Are you sure you want to remove this member from the team?" }, class: "btn btn-danger" %>
+            <% end %>
+          <% end %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% if @team.manager != current_user %>
+  <% unless @team.members.include?(current_user) %>
+    <%= link_to "Join Team", join_team_path(@team), method: :post, class: "btn btn-primary" %>
+  <% end %>
+<% end %>

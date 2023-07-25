@@ -1,0 +1,22 @@
+<h1>Joined Teams</h1>
+
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th>Team Name</th>
+      <th>Description</th>
+      <th>Manager</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @teams.each do |team| %>
+      <tr>
+        <td><%= team.name %></td>
+        <td><%= team.description %></td>
+        <td><%= team.manager.name %></td>
+        <td><%= link_to "View More", team_path(team), class: "btn btn-primary" %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
