@@ -16,10 +16,12 @@
           <td scope="row"><%= team.description %></td>
           <td scope="row"><%= team.manager.name %></td>
           <td scope="row">
-            <% team.members.each do |member| %>
-              <% if current_user.manager? && team.manager == current_user || current_user.admin? %>
-                <% if team.manager != member %>
+            <% if current_user.manager? && (team.manager == current_user) || current_user.admin? %>
+              <% member_removed = false %>
+              <% team.members.each do |member| %>
+                <% if team.manager != member && !member_removed %>
                   <%= link_to "Remove", remove_member_team_path(team, user_id: member.id), method: :delete, data: { confirm: "Are you sure you want to remove this member from the team?" }, class: "btn btn-danger" %>
+                  <% member_removed = true %>
                 <% end %>          
               <% end %>
             <% end %>

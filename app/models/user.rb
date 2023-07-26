@@ -11,7 +11,6 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :name, presence: true
-  validates :role, inclusion: { in: %w(admin manager member), message: "%{value} is not a valid role" }
   enum role: { admin: 'admin', manager: 'manager', member: 'member' }
 
   ROLES = ['admin', 'manager', 'member'].freeze
