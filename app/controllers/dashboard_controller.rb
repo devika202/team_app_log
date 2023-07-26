@@ -5,7 +5,4 @@ class DashboardController < ApplicationController
       @teams = Team.all
 
     end
-  
-    
   end
-  

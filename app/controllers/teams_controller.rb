@@ -78,7 +78,6 @@ class TeamsController < ApplicationController
       if @note.save
         redirect_to @team, notice: 'Note was successfully added.'
       else
-        # Handle validation errors
         render 'show'
       end
     end

@@ -6,15 +6,7 @@
     <%= link_to "Leave Team", leave_team_team_path(@team), method: :delete, data: { confirm: "Are you sure you want to leave this team?" }, class: "btn btn-danger" %>
   <% end %></p>
   <h3 class="text-center mt-4">Members : <%= @team.members.count %></h3>
-  <% unless @team.manager == current_user || current_user.admin? %>
-    <% @team.members.each do |member| %>
-      <% if @team.manager == member %>
-        <p class="text-center mt-4"><strong>Team Manager: <%= member.name %></strong></p>
-      <% else %>
-        <p class="text-center mt-4"><b><%= member.name %></b></p>
-      <% end %>
-    <% end %>
-  <% end %><br>
+  
   <% if @team.manager == current_user || current_user.admin? %>
     <table class="table table-striped table-bordered table-hover">
       <thead class="thead-dark">
