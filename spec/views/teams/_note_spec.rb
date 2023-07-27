@@ -1,4 +1,3 @@
-# spec/views/teams/show.html.erb_spec.rb
 require 'rails_helper'
 
 RSpec.describe 'teams/_note', type: :view do

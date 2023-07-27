@@ -1,5 +1,3 @@
-# spec/views/users/index.html.erb_spec.rb
-
 require 'rails_helper'
 
 RSpec.describe 'users/index', type: :view do
