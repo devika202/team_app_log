@@ -1,0 +1,22 @@
+<div class="container">
+  <h1 class="text-center">PAGE VISITS REPORT</h1><br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Page URL</th>
+        <th>Timestamp</th>
+        <th>Time Spent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @visited_urls.each do |visit| %>
+        <tr>
+          <td><%= visit[:url] %></td>
+          <td><%= visit[:timestamp] %></td>
+          <td><%= visit[:time_spent] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<br><br><br><br>

@@ -8,6 +8,7 @@ class User < ApplicationRecord
   has_many :owned_teams, class_name: 'Team', foreign_key: 'manager_id'
   has_many :notes, dependent: :delete_all
   has_many :managed_teams, class_name: 'Team', foreign_key: 'manager_id'
+  has_many :user_behaviors
   validates :email, presence: true, uniqueness: true
   validates :password, presence: true, length: { minimum: 6 }, allow_nil: true
   validates :name, presence: true

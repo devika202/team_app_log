@@ -1,0 +1,25 @@
+<div class="container">
+  <h1 class="text-center">Page Logs Of <%= @user.name %></h1><br>
+  <br>
+  <%= link_to "Clear All Logs", clear_all_logs_user_behavior_logs_path(user_id: @user), method: :delete, data: { confirm: "Are you sure you want to clear all logs?" }, class: "btn btn-danger" %>
+  <br><br>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Page URL</th>
+        <th>Timestamp</th>
+        <th>Time Spent</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @visited_urls.each do |visit| %>
+        <tr>
+          <td><%= visit[:url] %></td>
+          <td><%= visit[:timestamp] %></td>
+          <td><%= visit[:time_spent] %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+<br><br><br>

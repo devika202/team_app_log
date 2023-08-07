@@ -17,7 +17,12 @@ Rails.application.routes.draw do
   end
   resources :users do
     get :teams, on: :member
+    resources :behavior_logs, only: [:index]
+    resources :behavior_logs do
+      delete :clear_all_logs, on: :collection
+    end
   end
+  
   resources :notes
   delete '/notes/:id', to: 'notes#destroy', as: :delete_note
   patch '/teams/:team_id/notes/:id/update_note_access', to: 'notes#update_note_access', as: :update_note_access_team_note
@@ -26,4 +31,5 @@ Rails.application.routes.draw do
   get '/your_teams', to: 'teams#your_teams', as: :your_teams
   get '/joined_teams', to: 'teams#joined_teams', as: :joined_teams
   root 'dashboard#index'
+  get 'reports/visited_urls', to: 'reports#visited_urls'
 end

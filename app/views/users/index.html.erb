@@ -8,6 +8,7 @@
         <th scope="col">Email</th>
         <th scope="col">Role</th>
         <th scope="col">Actions</th>
+        <th scope="col">Logs</th>
       </tr>
     </thead>
     <tbody>
@@ -24,7 +25,7 @@
                   <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
                   <%= select_tag 'user[role]', options_for_select(User.roles.keys, user.role), include_blank: 'member', class: 'form-control' %>
                   &nbsp;&nbsp;
-                  <%= button_tag "Update", type: "submit", class: "btn btn-primary" %>
+                  <%= button_tag "Update", type: "submit", class: "btn btn-info" %>
                 <% end %>
               <% end %>
             <% else %>
@@ -32,7 +33,7 @@
             <% end %>
           </td>
           <td scope="row">
-            <%= link_to 'View Teams', teams_user_path(user), class: 'btn btn-primary' %>
+            <%= link_to 'View Teams', teams_user_path(user), class: 'btn btn-info' %>
             <% if current_user.admin? && user != current_user %>
               <% if user.manager? && user.teams_exist? %>
                 <p><strong>User is a manager of a team. Delete action is disabled.</strong></p>
@@ -40,6 +41,9 @@
                 <%= link_to 'Delete', user_path(user), method: :delete, data: { confirm: 'Are you sure you want to delete this user?' }, class: 'btn btn-danger' %>
               <% end %>
             <% end %>
+          </td>
+          <td scope="row">
+            <%= link_to 'LOGS', user_behavior_logs_path(user), class: 'btn btn-info' %>
           </td>
         </tr>
       <% end %>
