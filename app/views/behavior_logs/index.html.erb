@@ -1,7 +1,17 @@
 <div class="container">
   <h1 class="text-center">Page Logs Of <%= @user.name %></h1><br>
   <br>
-  <%= link_to "Clear All Logs", clear_all_logs_user_behavior_logs_path(user_id: @user), method: :delete, data: { confirm: "Are you sure you want to clear all logs?" }, class: "btn btn-danger" %>
+  <div class="form-group row justify-content-center form-label">
+  <%= link_to "Clear All Logs", clear_all_logs_user_behavior_logs_path(user_id: @user), method: :delete, data: { confirm: "Are you sure you want to clear all logs?" }, class: "btn btn-danger btn-lg", style: "width: 180px;" %>
+  </div>
+  <% if @visited_urls.any? %>
+    <div class="mt-4">
+      <%= line_chart @url_visits_chart_data, xtitle: 'URL Name', ytitle: 'Visit Count', messages: { empty: 'No data' } %>
+    </div>
+  <% else %>
+    <p>No visited URLs data available.</p>
+  <% end %><br>
+  
   <br><br>
   <table class="table table-bordered">
     <thead>

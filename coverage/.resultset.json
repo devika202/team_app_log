@@ -220,12 +220,22 @@
           1,
           1,
           1,
+          1,
           null,
           1,
           null,
           1,
           0,
           0,
+          null,
+          1,
+          null,
+          1,
+          60,
+          42,
+          null,
+          null,
+          null,
           null,
           null
         ]
@@ -279,6 +289,7 @@
           null,
           null,
           null,
+          1,
           1,
           1,
           1,
@@ -739,6 +750,17 @@
           null
         ]
       },
+      "/home/devika/rails/team_management_app/spec/factories/user_behaviors.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null
+        ]
+      },
       "/home/devika/rails/team_management_app/config/routes.rb": {
         "lines": [
           1,
@@ -760,7 +782,17 @@
           null,
           1,
           1,
+          1,
+          1,
+          1,
           null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
           1,
           1,
           1,
@@ -779,6 +811,7 @@
           null,
           1,
           null,
+          1,
           1,
           1,
           1,
@@ -1749,6 +1782,25 @@
           null
         ]
       },
+      "/home/devika/rails/team_management_app/spec/models/user_behavior_spec.rb": {
+        "lines": [
+          1,
+          null,
+          1,
+          1,
+          null
+        ]
+      },
+      "/home/devika/rails/team_management_app/app/models/user_behavior.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          null,
+          null
+        ]
+      },
       "/home/devika/rails/team_management_app/spec/models/user_spec.rb": {
         "lines": [
           1,
@@ -2602,6 +2654,6 @@
         ]
       }
     },
-    "timestamp": 1691299480
+    "timestamp": 1691463697
   }
 }

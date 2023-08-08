@@ -1,5 +1,6 @@
 class BehaviorLogsController < ApplicationController
   before_action :set_user, only: [:index, :clear_all_logs]
+  before_action :authenticate_user!
 
   def index
     @user = User.find(params[:user_id])
@@ -19,6 +20,8 @@ class BehaviorLogsController < ApplicationController
         @visited_urls << { url: url, timestamp: timestamp, time_spent: nil }
       end
     end
+    @url_visits_chart_data = user_behaviors.group_by { |b| b.page_name }
+    .transform_values(&:count)
   end
   
   def clear_all_logs

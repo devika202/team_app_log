@@ -17,6 +17,8 @@ class ReportsController < ApplicationController
         @visited_urls << { url: url, timestamp: timestamp, time_spent: nil }
       end
     end
+    @url_visits_chart_data = user_behaviors.group_by { |b| b.page_name }
+    .transform_values(&:count)
   end
 
   private

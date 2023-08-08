@@ -22,7 +22,11 @@ Rails.application.routes.draw do
       delete :clear_all_logs, on: :collection
     end
   end
-  
+  resources :reports, only: [] do
+    collection do
+      get :behavior_report
+    end
+  end
   resources :notes
   delete '/notes/:id', to: 'notes#destroy', as: :delete_note
   patch '/teams/:team_id/notes/:id/update_note_access', to: 'notes#update_note_access', as: :update_note_access_team_note

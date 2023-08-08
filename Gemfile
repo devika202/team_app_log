@@ -28,6 +28,8 @@ gem 'jquery-ui-rails'
 gem 'ransack'
 gem 'rails-erd'
 gem 'aws-sdk-augmentedairuntime'
+gem 'chartkick'
+gem 'groupdate'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
