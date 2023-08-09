@@ -1,5 +1,5 @@
 class BehaviorLogsController < ApplicationController
-  before_action :set_user, only: [:index, :clear_all_logs]
+  before_action :set_user, only: [:index, :clear_all_logs, :url_visits_table]
   before_action :authenticate_user!
 
   def index
@@ -28,6 +28,33 @@ class BehaviorLogsController < ApplicationController
     @user.user_behaviors.delete_all
     redirect_to user_behavior_logs_path(@user), notice: "All logs have been cleared."
   end
+  def url_visits_table
+    @user = User.find(params[:user_id])
+    user_behaviors = UserBehavior.where(user_id: @user.id).order(timestamp: :desc)
+    grouped_behaviors = user_behaviors.group_by(&:page_name)
+    
+    @visited_urls = []
+  
+    grouped_behaviors.each do |page_name, behaviors|
+      total_time_spent = 0
+    
+      behaviors.each_with_index do |behavior, index|
+        timestamp = behavior.timestamp
+  
+        if index > 0
+          previous_timestamp = behaviors[index - 1].timestamp
+          time_spent = (previous_timestamp - timestamp).to_i
+          total_time_spent += time_spent
+        end
+      end
+  
+      formatted_total_time_spent = format_time(total_time_spent)
+      @visited_urls << { page_name: page_name, total_time_spent: formatted_total_time_spent }
+    end
+  
+    render 'url_visits_table'
+  end
+  
 
   private
 

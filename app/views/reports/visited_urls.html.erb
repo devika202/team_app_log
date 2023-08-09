@@ -5,22 +5,22 @@
       <%= line_chart @url_visits_chart_data, xtitle: 'URL Name', ytitle: 'Visit Count', messages: { empty: 'No data' } %>
     </div>
   <% else %>
-    <p>No visited URLs data available.</p>
+  <p class="text-center"><b>No URL visits to display.<b></p>
   <% end %><br>
-  <table class="table table-bordered">
-    <thead>
+  <table class="table table-striped table-bordered table-hover">
+    <thead class="thead-dark">
       <tr>
-        <th>Page URL</th>
-        <th>Timestamp</th>
-        <th>Time Spent</th>
+        <th scope="col">Page URL</th>
+        <th scope="col">Timestamp</th>
+        <th scope="col">Time Spent</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="table-group-divider">
       <% @visited_urls.each do |visit| %>
         <tr>
-          <td><%= visit[:url] %></td>
-          <td><%= visit[:timestamp] %></td>
-          <td><%= visit[:time_spent] %></td>
+          <td scope="row"><%= visit[:url] %></td>
+          <td scope="row"><%= visit[:timestamp] %></td>
+          <td scope="row"><%= visit[:time_spent] %></td>
         </tr>
       <% end %>
     </tbody>

@@ -17,16 +17,23 @@ Rails.application.routes.draw do
   end
   resources :users do
     get :teams, on: :member
-    resources :behavior_logs, only: [:index]
-    resources :behavior_logs do
-      delete :clear_all_logs, on: :collection
+    resources :behavior_logs, only: [:index] do
+      collection do
+        delete :clear_all_logs
+        get :url_visits_table
+      end
+      
     end
   end
+
+  
   resources :reports, only: [] do
     collection do
       get :behavior_report
     end
   end
+  resources :page_reports, only: [:show]
+
   resources :notes
   delete '/notes/:id', to: 'notes#destroy', as: :delete_note
   patch '/teams/:team_id/notes/:id/update_note_access', to: 'notes#update_note_access', as: :update_note_access_team_note
