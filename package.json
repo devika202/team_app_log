@@ -1,5 +1,7 @@
 {
   "name": "team_management_app",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "@fullstory/browser": "^1.7.1"
+  }
 }
