@@ -8,16 +8,20 @@ class TeamsController < ApplicationController
       @team = Team.new
       @managers = User.where(role: 'manager')
     end
-  
     def create
       @team = Team.new(team_params)
       if @team.save
         redirect_to @team, notice: 'Team created successfully.'
       else
         @managers = User.where(role: 'manager')
+        puts "Team creation failed with the following errors:"
+        @team.errors.full_messages.each do |message|
+          puts message
+        end
         render :new
       end
     end
+    
 
     def leave_team
       if @team && @team.members.include?(current_user)
