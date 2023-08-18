@@ -3,17 +3,21 @@ class NotesController < ApplicationController
     
     def show
       @note = Note.find(params[:id])
+      @note.create_activity key: 'note.notesshowpage', owner: current_user
       @team = @note.team
     end
 
     def update_note_access
       @note = Note.find(params[:note_id])
+      @note.create_activity key: 'note.accessupdate', owner: current_user
       @note.update(access_level: params[:access_level])
       redirect_to @note, notice: 'Note access level was successfully updated.'
     end
 
     def destroy
       @note = Note.find(params[:id])
+      @note.create_activity key: 'note.destroynote', owner: current_user
+
       @note.destroy
       redirect_to dashboard_path, notice: 'Note was successfully deleted.'
     end

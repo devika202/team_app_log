@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
   include MultiTenantConcern
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :capture_user_behavior
-
+  
   protected
 
   def configure_permitted_parameters

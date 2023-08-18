@@ -3,6 +3,10 @@ class DashboardController < ApplicationController
   
     def index
       @teams = Team.all
-
+    
+      @teams.each do |team|
+        team.create_activity key: 'teams.dashboard', owner: current_user
+      end
     end
+    
   end

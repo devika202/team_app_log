@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   devise_for :users
   resources :users do
     member do
+      get 'activity_feed'
       put :assign_team
     end
   end

@@ -1,0 +1,49 @@
+<div class="activity-feed">
+  <div class="container">
+    <h1 class="text-center mt-4">ACTIVITY FEED</h1><br>
+    <table class="table table-striped table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">User</th>
+          <th scope="col">Action</th>
+          <th scope="col">Timestamp (Indian Time)</th>
+          <th scope="col">Date</th>
+          <th scope="col">Time</th>
+          <th scope="col">Time Spent</th>
+        </tr>
+      </thead>
+      <tbody class="table-group-divider">
+        <% sorted_activities = @activities.sort_by(&:created_at).reverse %>
+        <% previous_activity_time = nil %>
+        <% sorted_activities.each do |activity| %>
+          <tr>
+            <td scope="row"><strong><%= activity.owner.name %></strong></td>
+            <td scope="row"><%= activity.key %></td>
+            <td scope="row"><%= activity.created_at.in_time_zone('Asia/Kolkata').strftime('%Y-%m-%d %H:%M:%S %p %Z') %></td>
+            <td scope="row"><%= activity.created_at.in_time_zone('Asia/Kolkata').strftime('%Y-%m-%d') %></td>
+            <td scope="row"><%= activity.created_at.in_time_zone('Asia/Kolkata').strftime('%H:%M:%S %p') %></td>
+            <td scope="row">
+              <% if previous_activity_time %>
+                <% time_difference = previous_activity_time - activity.created_at %>
+                <% days = (time_difference / 1.day).to_i %>
+                <% hours = (time_difference % 1.day / 1.hour).to_i %>
+                <% minutes = (time_difference % 1.hour / 1.minute).to_i %>
+                <% seconds = (time_difference % 1.minute).to_i %>
+                <% time_spent = [] %>
+                <% time_spent << "#{days} days" if days > 0 %>
+                <% time_spent << "#{hours} hours" if hours > 0 %>
+                <% time_spent << "#{minutes} minutes" if minutes > 0 %>
+                <% time_spent << "#{seconds} seconds" if seconds > 0 || time_spent.empty? %>
+                <%= time_spent.join(', ') %>
+              <% else %>
+                N/A
+              <% end %>
+            </td>
+          </tr>
+          <% previous_activity_time = activity.created_at %>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+</div>
+<br><br><br>

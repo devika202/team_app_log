@@ -30,6 +30,7 @@ gem 'rails-erd'
 gem 'aws-sdk-augmentedairuntime'
 gem 'chartkick'
 gem 'groupdate'
+gem 'public_activity'
 
 # Use CoffeeScript for .coffee assets and views
 gem 'coffee-rails', '~> 4.2'
