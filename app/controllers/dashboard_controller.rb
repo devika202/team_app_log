@@ -5,7 +5,7 @@ class DashboardController < ApplicationController
       @teams = Team.all
     
       @teams.each do |team|
-        team.create_activity key: 'teams.dashboard', owner: current_user
+        team.create_activity key: 'teams.dashboard', owner: current_user, parameters: { url: request.original_url }
       end
     end
     

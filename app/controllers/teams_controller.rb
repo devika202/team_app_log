@@ -7,15 +7,20 @@ class TeamsController < ApplicationController
     def new
       @team = Team.new
       @managers = User.where(role: 'manager')
-    
-      @team.create_activity key: 'team.new', owner: current_user
+      if @team.save
+        @team.create_activity key: 'team.new', owner: current_user, parameters: { url: request.original_url }
+        redirect_to team_path(@team), notice: 'Team created successfully.'
+      else
+        render :new
+      end
+      
     end
     
     
     def create
       @team = Team.new(team_params)
       if @team.save
-        @team.create_activity key: 'team.created', owner: current_user
+        @team.create_activity key: 'team.created', owner: current_user, parameters: { url: request.original_url }
 
         redirect_to @team, notice: 'Team created successfully.'
       else
@@ -32,7 +37,7 @@ class TeamsController < ApplicationController
     def leave_team
       if @team && @team.members.include?(current_user)
         @team.members.delete(current_user)
-        @team.create_activity key: 'team.leaveteam', owner: current_user
+        @team.create_activity key: 'team.leaveteam', owner: current_user, parameters: { url: request.original_url }
         redirect_to dashboard_path, notice: "You have left the team."
       else
         redirect_to dashboard_path, alert: "Team not found or you are not a member of this team."
@@ -44,14 +49,14 @@ class TeamsController < ApplicationController
 
     def your_teams
     @teams = current_user.owned_teams
-    @team.create_activity key: 'team.yourteams', owner: current_user
+    @team.create_activity key: 'team.yourteams', owner: current_user, parameters: { url: request.original_url }
     redirect_to dashboard_path
     end
   
     def joined_teams
       @teams = current_user.teams
       @teams.each do |team|
-        team.create_activity key: 'team.joinedteams', owner: current_user
+        team.create_activity key: 'team.joinedteams', owner: current_user, parameters: { url: request.original_url }
       end
     end
     
@@ -59,7 +64,7 @@ class TeamsController < ApplicationController
     def remove_member
         @team = Team.find(params[:id])
         @user = User.find(params[:user_id])
-        @team.create_activity key: 'team.removemember', owner: current_user
+        @team.create_activity key: 'team.removemember', owner: current_user, parameters: { url: request.original_url }
       if current_user.admin? || @team.manager == current_user
         @team.members.delete(@user)
 
@@ -79,7 +84,7 @@ class TeamsController < ApplicationController
         @teams = current_user.teams
       end
       if @team.present?  
-        @team.create_activity key: 'team.index', owner: current_user
+        @team.create_activity key: 'team.index', owner: current_user, parameters: { url: request.original_url }
       end
       @managers = User.where(role: 'manager') 
     end
@@ -87,14 +92,14 @@ class TeamsController < ApplicationController
   
     def show
       @team = Team.find(params[:id])
-      @team.create_activity key: 'team.showteam', owner: current_user
+      @team.create_activity key: 'team.showteam', owner: current_user, parameters: { url: request.original_url }
 
       @note = @team.notes.build
     end
   
     def create_note
       @team = Team.find(params[:id])
-      @team.create_activity key: 'team.createnote', owner: current_user
+      @team.create_activity key: 'team.createnote', owner: current_user, parameters: { url: request.original_url }
 
       @note = @team.notes.build(note_params)
       @note.user = current_user
@@ -108,13 +113,13 @@ class TeamsController < ApplicationController
   
     def join
       @team.members << current_user
-      @team.create_activity key: 'team.jointeam', owner: current_user
+      @team.create_activity key: 'team.jointeam', owner: current_user, parameters: { url: request.original_url }
 
       redirect_to @team, notice: 'You have joined the team.'
     end
   
     def update_manager
-      @team.create_activity key: 'team.updatemanager', owner: current_user
+      @team.create_activity key: 'team.updatemanager', owner: current_user, parameters: { url: request.original_url }
 
       if current_user.admin?
         @team.manager = User.find(params[:manager_id])
@@ -130,7 +135,7 @@ class TeamsController < ApplicationController
 
     def delete_team
       @team = Team.find(params[:id])
-      @team.create_activity key: 'team.deleteteam', owner: current_user
+      @team.create_activity key: 'team.deleteteam', owner: current_user, parameters: { url: request.original_url }
 
       if current_user.admin?
         @team.destroy

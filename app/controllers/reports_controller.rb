@@ -17,6 +17,13 @@ class ReportsController < ApplicationController
         @visited_urls << { url: url, timestamp: timestamp, time_spent: nil }
       end
     end
+    activity = PublicActivity::Activity.new(
+      key: 'Page Visit History',
+      owner: current_user,
+      parameters: { url: request.original_url }
+    )
+    activity.save(validate: false)
+
     @url_visits_chart_data = user_behaviors.group_by { |b| b.page_name }
     .transform_values(&:count)
 

@@ -22,6 +22,7 @@ class BehaviorLogsController < ApplicationController
     end
     @url_visits_chart_data = user_behaviors.group_by { |b| b.page_name }
     .transform_values(&:count)
+    
   end
   
   def clear_all_logs
