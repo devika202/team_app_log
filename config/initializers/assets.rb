@@ -13,6 +13,8 @@ Rails.application.config.assets.precompile += %w( bootstrap.js )
 Rails.application.config.assets.precompile += %w( jquery.js )
 Rails.application.config.assets.precompile += %w( jquery-ui.js )
 Rails.application.config.assets.precompile += ['chartkick.js']
+Rails.application.config.assets.precompile += %w( inactivity_tracker.js )
+
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in the app/assets

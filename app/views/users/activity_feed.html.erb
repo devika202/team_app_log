@@ -10,6 +10,7 @@
           <th>Date</th>
           <th>Time (Indian Time)</th>
           <th>Time Spent</th>
+          <th>Inactive Time</th>
         </tr>
       </thead>
       <tbody>
@@ -39,6 +40,21 @@
                 N/A
               <% end %>
             </td>
+            <td>
+              <% if previous_activity_time %>
+                <% inactivity_seconds = activity.created_at - previous_activity_time %>
+                <% inactivity_duration = ActiveSupport::Duration.build(inactivity_seconds) %>
+                <% inactivity_parts = inactivity_duration.parts.reject { |part, value| value.zero? } %>    
+                <% if inactivity_parts.empty? || inactivity_seconds < 30 %>
+                  0 seconds
+                <% else %>
+                  <%= inactivity_parts.map { |part, value| "#{value.to_i} #{part.to_s.pluralize(value.to_i)}" }.join(', ') %>
+                <% end %>              
+              <% else %>
+                0 seconds
+              <% end %>          
+            </td>
+
           </tr>
           <% previous_activity_time = activity.created_at %>
         <% end %>

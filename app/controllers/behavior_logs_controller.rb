@@ -22,7 +22,13 @@ class BehaviorLogsController < ApplicationController
     end
     @url_visits_chart_data = user_behaviors.group_by { |b| b.page_name }
     .transform_values(&:count)
-    
+
+    activity = PublicActivity::Activity.new(
+      key: 'Page Logs',
+      owner: current_user,
+      parameters: { url: request.original_url }
+    )
+    activity.save(validate: false)
   end
   
   def clear_all_logs
